@@ -2244,6 +2244,7 @@ insectxj        // B97 (c) 1989 Taito Corporation (Japan)
 cchance         // (c)1987 Taito?
 champbwl        // (c)1989 Romstar.  not Taito, but the same Seta video chips
 doraemon        // Sunsoft / Epoch / Fujiko - Shogakukan - TV Asahi (prototype)
+thedealr        // Visco Games
 
 // Taito L-System games
 raimais         // B36 (c) 1988 Taito Corporation (Japan)
@@ -3138,7 +3139,7 @@ cawingj         // 12/10/1990 (c) 1990 (Japan)
 cawingbl        // bootleg
 cawingb2        // bootleg
 nemo            // 30/11/1990 (c) 1990 (World)
-nemor1      // 09/11/1990 (c) 1990 (World)
+nemor1          // 09/11/1990 (c) 1990 (World)
 nemoj           // 20/11/1990 (c) 1990 (Japan)
 sf2             // 22/05/1991 (c) 1991 (World)
 sf2eb           // 14/02/1991 (c) 1991 (World)
@@ -3205,7 +3206,7 @@ sf2red          // hack
 sf2v004         // hack
 sf2acc          // hack
 sf2acca         // hack
-sf2ceblp            // hack
+sf2ceblp        // hack
 sf2accp2        // hack
 sf2amf          // bootleg
 sf2amf2         // bootleg
@@ -3233,6 +3234,7 @@ varth           // 14/07/1992 (c) 1992 (World)
 varthr1         // 12/06/1992 (c) 1992 (World)
 varthu          // 12/06/1992 (c) 1992 (USA)
 varthj          // 14/07/1992 (c) 1992 (Japan)
+varthjr         // 14/07/1992 (c) 1992 (Japan)
 qad             // 01/07/1992 (c) 1992 (USA)
 qadjr           // 21/09/1994 (c) 1994 (Japan)
 wof             // 31/10/1992 (c) 1992 (World) (CPS1 + QSound)
@@ -3277,6 +3279,7 @@ megamana        // 06/10/1995 (c) 1995 (Asia)
 rockmanj        // 22/09/1995 (c) 1995 (Japan)
 fcrash          // bootleg of Final Fight
 ffightbl        // bootleg
+ffightbla		// bootleg
 ganbare         // 11/04/2000 (c) 2000 (Japan)
 
 
@@ -4686,6 +4689,7 @@ passht4b        // bootleg
 passshtb        // bootleg
 shinoblb        // (c) 1987 (but bootleg)
 shinobld        // (c) 1987 (but bootleg)
+shinoblda		//
 tetrisbl        // (c) 1988 (but bootleg)
 beautyb         // (c) 1991 AMT
 iqpipe          // (c) 1991 AMT
@@ -4818,6 +4822,7 @@ rchasej         // 1991.09 Rail Chase (Japan)
 // Sega System 24 games
 // disk based
 hotrodj         // 1988.03 Hot Rod (Japan)
+hotrodja        // 1988.03 Hot Rod (Japan)
 hotrod          // 1988.?? Hot Rod (World)
 hotroda
 				// 1988.07 Hot Rod (US)
@@ -5759,6 +5764,7 @@ scg06nt         // 2005.12 Sega Golf Club 2006: Next Tours (Rev A)
 				// 2006.09 Sega Network Taisen Mahjong MJ 3 Evolution (Rev A)
 				// 2006.10 Quest of D Oukoku no Syugosya Ver.3.00
 				// 2006.11 Quest of D Oukoku no Syugosya Ver.3.01
+mj3evo		// 2007.06 Sega Network Taisen Mahjong MJ 3 Evolution (Rev B)
 				// 2007.11 Quest of D The Battle Kingdom Ver.4.00
 				// 2008.01 Quest of D The Battle Kingdom Ver.4.00b
 				// 2008.02 Quest of D The Battle Kingdom Ver.4.00c
@@ -6016,7 +6022,8 @@ secretab        // bootleg
 midres          // (c) 1989 Data East Corporation (World)
 midresu         // (c) 1989 Data East USA (US)
 midresj         // (c) 1989 Data East Corporation (Japan)
-midresb         // (c) 1989 Data East Corporation (Japan)
+midresb         // bootleg
+midresbj		// bootleg
 bouldash        // (c) 1990 Data East Corporation (World)
 bouldashj       // (c) 1990 Data East Corporation (Japan)
 // end of similar hardware
@@ -6476,6 +6483,7 @@ mogura          // GX141 (c) 1991
 wecleman        // GX602 (c) 1986
 wecleman2       // GX602?(c) 1988
 hotchase        // GX763 (c) 1988
+hotchasea
 chqflag         // GX717 (c) 1988
 chqflagj        // GX717 (c) 1988 (Japan)
 ultraman        // GX910 (c) 1991 Banpresto/Bandai
@@ -6642,6 +6650,7 @@ mtlchampj       // GX234 (c) 1993 (Japan)
 mtlchampa       // GX234 (c) 1993 (Japan)
 rungun          // GX247 (c) 1993 (World)
 runguna         // GX247 (c) 1993 (World)
+rungunb         // GX247 (c) 1993 (World)
 rungunu         // GX247 (c) 1993 (US)
 rungunua        // GX247 (c) 1993 (US)
 slmdunkj        // GX247 (c) 1993 (Japan)
@@ -8784,6 +8793,7 @@ pspikesc        // bootleg
 karatblz        // (c) 1991 Video System Co.
 karatblzu       // (c) 1991 Video System Co. (US)
 karatblzj       // (c) 1991 Video System / Tecmo (Japan)
+karatblzbl		// bootleg
 turbofrc        // (c) 1991 Video System Co.
 aerofgt         // (c) 1992 Video System Co.
 aerofgtb        // (c) 1992 Video System Co.
@@ -9661,6 +9671,7 @@ sprtmtch        // "31" (c) 1989 Dynax + Fabtek license
 maya            // (c) 1994 Promat
 mayaa           // (c) 1994 Promat
 mayab           // (c) 1994 Promat
+mayac			// (c) 1994 Promat
 inca            // (c) 199? ????
 blktouch        // (c) Yang Gi Co Ltd.
 mcnpshnt        // "33" Mahjong Campus Hunting 1990 Dynax
@@ -9715,6 +9726,7 @@ mjdchuka        // "111" (c) 1995 Nakanihon
 ddenlovj        // "112" (c) 1995 Dynax (Japan)
 ddenlovrk       // "113" (c) 1995 Dynax (Korea)
 ddenlovr        // "113" (c) 1996 Dynax (Hong Kong)
+mjschuka        // "115" (c) 1995 Dynax
 mjchuuka        // "121" (c) 1998 Dynax
 ddenlovrb       // bootleg
 mjflove         // "500" 1996 Dynax
@@ -10645,6 +10657,7 @@ bmcbowl         // (c) 1994 BMC
 koftball        // (c) 1995 BMC
 bmcpokr         // (c) 1999 BMC
 popobear        // (c) 2000 BMC
+mjmaglmp        // (c) 2000 BMC
 
 // Merit
 mgames          // (c) 1981 Merit

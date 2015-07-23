@@ -9,23 +9,8 @@
 
 #ifndef __PLIB_PREPROCESSOR__
 
-#define DM7416_GATE(_name)                    		                           \
-		NET_REGISTER_DEV_X(DM7416_GATE, _name)
-
-#define DM7416_DIP(_name)            	        		                       \
-		NET_REGISTER_DEV_X(DM7416_DIP, _name)
-
-#define MB3614_DIP(_name)            			                               \
-		NET_REGISTER_DEV_X(MB3614_DIP, _name)
-
 #define LM358_DIP(_name)            			                               \
 		NET_REGISTER_DEV_X(LM358_DIP, _name)
-
-#define CD4001_NOR(_name)                                                      \
-		NET_REGISTER_DEV_X(CD4001_NOR, _name)
-
-#define CD4001_DIP(_name)                                                      \
-		NET_REGISTER_DEV_X(CD4001_DIP, _name)
 
 #define G501534_DIP(_name)                                                     \
 		NET_REGISTER_DEV_X(G501534_DIP, _name)
@@ -49,9 +34,9 @@ NETLIST_START(dummy)
 // .END
 
 	SOLVER(Solver, 24000)
-	PARAM(Solver.ACCURACY, 1e-8)
+	PARAM(Solver.ACCURACY, 1e-7)
 	PARAM(Solver.NR_LOOPS, 90)
-	PARAM(Solver.SOR_FACTOR, 0.00001)
+	PARAM(Solver.SOR_FACTOR, 0.001)
 	PARAM(Solver.GS_LOOPS, 1)
 	//PARAM(Solver.GS_THRESHOLD, 99)
 	PARAM(Solver.ITERATIVE, "SOR")
@@ -85,12 +70,20 @@ NETLIST_START(dummy)
 	NET_C(RO.2, GND)
 
 	// FIXME: Same as 1N4148
-	NET_MODEL(".model 1S2075 D(Is=2.52n Rs=.568 N=1.752 Cjo=4p M=.4 tt=20n Iave=200m Vpk=75)")
-	NET_MODEL(".model 2SC1941 NPN(IS=46.416f BF=210 NF=1.0022 VAF=600 IKF=500m ISE=60f NE=1.5 BR=2.0122 NR=1.0022 VAR=10G IKR=10G ISC=300p NC=2 RB=13.22 IRB=10G RBM=13.22 RE=100m RC=790m CJE=26.52p VJE=900m MJE=518m TF=1.25n XTF=10 VTF=10 ITF=500m PTF=0 CJC=4.89p VJC=750m MJC=237m XCJC=500m TR=100n CJS=0 VJS=750m MJS=500m XTB=1.5 EG=1.11 XTI=3 KF=0 AF=1 FC=500m)")
+	NET_MODEL("1S2075 D(Is=2.52n Rs=.568 N=1.752 Cjo=4p M=.4 tt=20n Iave=200m Vpk=75)")
+	NET_MODEL("2SC1941 NPN(IS=46.416f BF=210 NF=1.0022 VAF=600 IKF=500m ISE=60f NE=1.5 BR=2.0122 NR=1.0022 VAR=10G IKR=10G ISC=300p NC=2 RB=13.22 IRB=10G RBM=13.22 RE=100m RC=790m CJE=26.52p VJE=900m MJE=518m TF=1.25n XTF=10 VTF=10 ITF=500m PTF=0 CJC=4.89p VJC=750m MJC=237m XCJC=500m TR=100n CJS=0 VJS=750m MJS=500m XTB=1.5 EG=1.11 XTI=3 KF=0 AF=1 FC=500m)")
 
 	INCLUDE(CongoBongo_schematics)
 
-	OPTIMIZE_FRONTIER(C51.1, RES_K(50), 50)
+	/* The opamp actually has an FPF of about 500k. This doesn't work here and causes oscillations.
+	 * FPF here therefore about half the Solver clock.
+	 */
+	PARAM(XU16.B.MODEL, "MB3614(UGF=11k)")
+	PARAM(XU17.C.MODEL, "MB3614(UGF=11k)")
+	//PARAM(XU16.B.MODEL, "MB3614_SLOW")
+	//PARAM(XU17.C.MODEL, "MB3614_SLOW")
+
+	OPTIMIZE_FRONTIER(C51.1, RES_K(20), 50)
 	OPTIMIZE_FRONTIER(R77.2, RES_K(20), 50)
 
 	OPTIMIZE_FRONTIER(C25.2, RES_K(240), 50)
@@ -237,7 +230,8 @@ NETLIST_START(CongoBongo_schematics)
 	CD4001_DIP(XU18)
 	CD4538_DIP(XU19)
 	MM5837_DIP(XU20)
-	DM7416_DIP(XU6)
+	TTL_7416_DIP(XU6)
+
 	NET_C(D1.A, C21.2, R23.1)
 	NET_C(D1.K, C20.1, R22.1)
 	NET_C(XU13.1, C37.2, C36.1, R48.1)
@@ -334,7 +328,7 @@ NETLIST_START(CongoBongo_schematics)
 	NET_C(C61.1, R94.2)
 NETLIST_END()
 
-NETLIST_START(opamp)
+NETLIST_START(opamp_mod)
 
 	/* Opamp model from
 	 *
@@ -365,7 +359,7 @@ NETLIST_START(opamp)
 	AFUNC(fUL, 1, "A0 1.2 +")
 
 	ALIAS(VCC, fUH.A0) // VCC terminal
-	ALIAS(GND, fUL.A0) // VCC terminal
+	ALIAS(GND, fUL.A0) // VGND terminal
 
 	AFUNC(fVREF, 2, "A0 A1 + 0.5 *")
 	NET_C(fUH.A0, fVREF.A0)
@@ -374,13 +368,18 @@ NETLIST_START(opamp)
 	NET_C(EBUF.ON, fVREF)
 	/* The opamp model */
 
-	VCCS(G1)
+	LVCCS(G1)
 	PARAM(G1.RI, RES_K(1000))
-
+#if 0
 	PARAM(G1.G, 0.0022)
 	RES(RP1, 1e6)
 	CAP(CP1, 0.0318e-6)
-
+#else
+	PARAM(G1.G, 0.002)
+	PARAM(G1.CURLIM, 0.002)
+	RES(RP1, 9.5e6)
+	CAP(CP1, 0.0033e-6)
+#endif
 	VCVS(EBUF)
 	PARAM(EBUF.RO, 50)
 	PARAM(EBUF.G, 1)
@@ -393,101 +392,30 @@ NETLIST_START(opamp)
 	NET_C(RP1.1, G1.OP)
 	NET_C(CP1.1, RP1.1)
 
-	DIODE(DP,".model tt D(IS=1e-15 N=1)")
-	DIODE(DN,".model tt D(IS=1e-15 N=1)")
-
+	DIODE(DP,"D(IS=1e-15 N=1)")
+	DIODE(DN,"D(IS=1e-15 N=1)")
+#if 1
 	NET_C(DP.K, fUH.Q)
 	NET_C(fUL.Q, DN.A)
 	NET_C(DP.A, DN.K, RP1.1)
+#else
+	/*
+	 * This doesn't add any performance by decreasing iteration loops.
+	 * To the contrary, it significantly decreases iterations
+	 */
+	RES(RH1, 0.1)
+	RES(RL1, 0.1)
+	NET_C(DP.K, RH1.1)
+	NET_C(RH1.2, fUH.Q)
+	NET_C(fUL.Q, RL1.1)
+	NET_C(RL1.2, DN.A)
+	NET_C(DP.A, DN.K, RP1.1)
 
+#endif
 	NET_C(EBUF.IP, RP1.1)
 
 NETLIST_END()
 
-NETLIST_START(MB3614_DIP)
-	SUBMODEL(opamp, op1)
-	SUBMODEL(opamp, op2)
-	SUBMODEL(opamp, op3)
-	SUBMODEL(opamp, op4)
-
-	ALIAS( 1, op1.OUT)
-	ALIAS( 2, op1.MINUS)
-	ALIAS( 3, op1.PLUS)
-
-	ALIAS( 7, op2.OUT)
-	ALIAS( 6, op2.MINUS)
-	ALIAS( 5, op2.PLUS)
-
-	ALIAS( 8, op3.OUT)
-	ALIAS( 9, op3.MINUS)
-	ALIAS(10, op3.PLUS)
-
-	ALIAS(14, op4.OUT)
-	ALIAS(13, op4.MINUS)
-	ALIAS(12, op4.PLUS)
-
-	NET_C(op1.GND, op2.GND, op3.GND, op4.GND)
-	NET_C(op1.VCC, op2.VCC, op3.VCC, op4.VCC)
-
-	ALIAS(11, op1.GND)
-	ALIAS( 4, op1.VCC)
-NETLIST_END()
-
-
-NETLIST_START(DM7416_DIP)
-	DM7416_GATE(s1)
-	DM7416_GATE(s2)
-	DM7416_GATE(s3)
-	DM7416_GATE(s4)
-	DM7416_GATE(s5)
-	DM7416_GATE(s6)
-
-	DUMMY_INPUT(GND)
-	DUMMY_INPUT(VCC)
-
-	ALIAS( 1, s1.A)
-	ALIAS( 2, s1.Q)
-	ALIAS( 3, s2.A)
-	ALIAS( 4, s2.Q)
-	ALIAS( 5, s3.A)
-	ALIAS( 6, s3.Q)
-	ALIAS( 7, GND.I)
-
-	ALIAS( 8, s4.Q)
-	ALIAS( 9, s4.A)
-	ALIAS(10, s5.Q)
-	ALIAS(11, s5.A)
-	ALIAS(12, s6.Q)
-	ALIAS(13, s6.A)
-	ALIAS(14, VCC.I)
-NETLIST_END()
-
-NETLIST_START(CD4001_DIP)
-	CD4001_NOR(s1)
-	CD4001_NOR(s2)
-	CD4001_NOR(s3)
-	CD4001_NOR(s4)
-
-	DUMMY_INPUT(VSS)
-	DUMMY_INPUT(VDD)
-
-	ALIAS( 1, s1.A)
-	ALIAS( 2, s1.B)
-	ALIAS( 3, s1.Q)
-	ALIAS( 4, s2.Q)
-	ALIAS( 5, s2.A)
-	ALIAS( 6, s2.B)
-	ALIAS( 7, VDD.I)
-
-	ALIAS( 8, s3.A)
-	ALIAS( 9, s3.B)
-	ALIAS(10, s3.Q)
-	ALIAS(11, s4.Q)
-	ALIAS(12, s4.A)
-	ALIAS(13, s4.B)
-	ALIAS(14, VSS.I)
-
-NETLIST_END()
 
 NETLIST_START(G501534_DIP)
 	AFUNC(f, 2, "A0 A1 0.2 * *")
@@ -518,27 +446,7 @@ NETLIST_START(G501534_DIP)
 NETLIST_END()
 
 NETLIST_START(congob_lib)
-	TRUTHTABLE_START(DM7416_GATE, 1, 1, 0, "")
-		TT_HEAD(" A | Q ")
-		TT_LINE(" 0 | 1 |15")
-		TT_LINE(" 1 | 0 |23")
-		TT_FAMILY(".model DM7416 FAMILY(IVL=0.8 IVH=2.0 OVL=0.1 OVH=4.95 ORL=10.0 ORH=1.0e8)")
-	TRUTHTABLE_END()
 
-	TRUTHTABLE_START(CD4001_NOR, 2, 1, 0, "")
-		TT_HEAD("A , B | Q ")
-		TT_LINE("0,0|1|85")
-		TT_LINE("X,1|0|120")
-		TT_LINE("1,X|0|120")
-		TT_FAMILY(".model CD4000 FAMILY(TYPE=CD4000)")
-	TRUTHTABLE_END()
-
-
-	//LOCAL_LIB_ENTRY(LM324_DIP)
-	//LOCAL_LIB_ENTRY(LM358_DIP)
-	LOCAL_LIB_ENTRY(CD4001_DIP)
-	LOCAL_LIB_ENTRY(DM7416_DIP)
-	LOCAL_LIB_ENTRY(MB3614_DIP)
 	LOCAL_LIB_ENTRY(G501534_DIP)
 
 NETLIST_END()
