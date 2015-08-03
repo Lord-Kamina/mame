@@ -8,7 +8,6 @@
 #include <solver/nld_solver.h>
 #include <cstring>
 #include <algorithm>
-#include <cstdio>
 
 #include "plib/palloc.h"
 
@@ -535,7 +534,7 @@ ATTR_COLD void device_t::register_subalias(const pstring &name, const pstring &a
 
 	// FIXME: make this working again
 	//if (term.isType(terminal_t::INPUT) || term.isType(terminal_t::TERMINAL))
-	//	m_terminals.add(name);
+	//  m_terminals.add(name);
 }
 
 ATTR_COLD void device_t::register_terminal(const pstring &name, terminal_t &port)

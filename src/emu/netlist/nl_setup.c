@@ -5,8 +5,7 @@
  *
  */
 
-#include <solver/nld_solver.h>
-#include <cstdio>
+#include "solver/nld_solver.h"
 
 #include "plib/palloc.h"
 #include "nl_base.h"
@@ -30,6 +29,7 @@ static NETLIST_START(base)
 	LOCAL_SOURCE(TTL74XX_lib)
 	LOCAL_SOURCE(CD4XXX_lib)
 	LOCAL_SOURCE(OPAMP_lib)
+	LOCAL_SOURCE(otheric_lib)
 
 	INCLUDE(diode_models);
 	INCLUDE(bjt_models);
@@ -37,6 +37,7 @@ static NETLIST_START(base)
 	INCLUDE(TTL74XX_lib);
 	INCLUDE(CD4XXX_lib);
 	INCLUDE(OPAMP_lib);
+	INCLUDE(otheric_lib);
 
 NETLIST_END()
 
@@ -1011,7 +1012,7 @@ void setup_t::include(const pstring &netlist_name)
 {
 	for (std::size_t i=0; i < m_sources.size(); i++)
 	{
-		if (m_sources[i]->parse(this, netlist_name))
+		if (m_sources[i]->parse(*this, netlist_name))
 			return;
 	}
 	netlist().error("unable to find %s in source collection", netlist_name.cstr());
@@ -1021,16 +1022,31 @@ void setup_t::include(const pstring &netlist_name)
 // base sources
 // ----------------------------------------------------------------------------------------
 
-bool netlist_source_string_t::parse(setup_t *setup, const pstring name)
+bool source_string_t::parse(setup_t &setup, const pstring &name)
 {
-	parser_t p(*setup);
-	return p.parse(m_str, name);
+	pimemstream istrm(m_str.cstr(), m_str.len());
+	pomemstream ostrm;
+
+	pimemstream istrm2(ppreprocessor().process(istrm, ostrm));
+	return parser_t(istrm2, setup).parse(name);
 }
 
-bool netlist_source_mem_t::parse(setup_t *setup, const pstring name)
+bool source_mem_t::parse(setup_t &setup, const pstring &name)
 {
-	parser_t p(*setup);
-	return p.parse(m_str, name);
+	pimemstream istrm(m_str.cstr(), m_str.len());
+	pomemstream ostrm;
+
+	pimemstream istrm2(ppreprocessor().process(istrm, ostrm));
+	return parser_t(istrm2, setup).parse(name);
+}
+
+bool source_file_t::parse(setup_t &setup, const pstring &name)
+{
+	pifilestream istrm(m_filename);
+	pomemstream ostrm;
+
+	pimemstream istrm2(ppreprocessor().process(istrm, ostrm));
+	return parser_t(istrm2, setup).parse(name);
 }
 
 }

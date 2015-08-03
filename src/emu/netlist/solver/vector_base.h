@@ -11,7 +11,7 @@
 #define VECTOR_BASE_H_
 
 #include <algorithm>
-#include "../plib/pconfig.h"
+#include "plib/pconfig.h"
 
 #if 0
 template <unsigned _storage_N>
@@ -42,7 +42,6 @@ inline void vec_set (const std::size_t n, const double &scalar, double * RESTRIC
 }
 inline double vecmult (const std::size_t n, const double * RESTRICT a1, const double * RESTRICT a2 )
 {
-
 	double value = 0.0;
 	for ( std::size_t i = 0; i < n; i++ )
 		value = value + a1[i] * a2[i];

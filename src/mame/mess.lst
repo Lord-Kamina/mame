@@ -99,6 +99,7 @@ multmega  // 1994 Sega Multi-Mega (Europe)
 32xe
 32xj
 32x_scd   // 1994 Sega Sega CD (USA w/32X addon)
+segapm	  // 1996 Sega Picture Magic (32x type hardware)
 
 saturnjp  // 1994 Sega Saturn (Japan)
 saturn  // 1995 Sega Saturn (USA)
@@ -1580,7 +1581,7 @@ fsa1gt
 fsa1st
 
 // Microsoft
-xbox	
+xbox
 
 // NASCOM Microcomputers
 nascom1   // 1978 Nascom 1
@@ -2153,9 +2154,14 @@ bmboxing    // Bambino
 bfriskyt    // Bandai
 packmon     // Bandai
 msthawk     // Bandai/Mattel
+bzaxxon     // Bandai
 zackman     // Bandai
+bpengo      // Bandai
+bbtime      // Bandai
 bdoramon    // Bandai
+bultrman    // Bandai
 machiman    // Bandai
+pairmtch    // Bandai
 alnattck    // Coleco
 cdkong      // Coleco
 cgalaxn     // Coleco
@@ -2178,6 +2184,7 @@ vinvader    // VTech
 
 // hh_melps4
 cfrogger    // Coleco
+gjungler    // Gakken
 
 // hh_pic16
 maniac      // Ideal
@@ -2710,3 +2717,5 @@ excali64
 bitgrpha
 bitgrphb
 tvgame
+aussieby
+

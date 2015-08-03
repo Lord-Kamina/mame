@@ -188,7 +188,7 @@ nl_convert_base_t::unit_t nl_convert_base_t::m_units[] = {
 		{"M",   "CAP_M(%g)", 1.0e-3 },
 		{"u",   "CAP_U(%g)", 1.0e-6 }, /* eagle */
 		{"U",   "CAP_U(%g)", 1.0e-6 },
-		{"μ",   "CAP_U(%g)", 1.0e-6    },
+		{"??",   "CAP_U(%g)", 1.0e-6    },
 		{"N",   "CAP_N(%g)", 1.0e-9 },
 		{"P",   "CAP_P(%g)", 1.0e-12},
 		{"F",   "%ge-15",    1.0e-15},
@@ -356,11 +356,11 @@ void nl_convert_spice_t::process_line(const pstring &line)
 	}
 }
 
-
+//FIXME: should accept a stream as well
 void nl_convert_eagle_t::convert(const pstring &contents)
 {
-	eagle_tokenizer tok(*this);
-	tok.reset(contents.cstr());
+	pistringstream istrm(contents);
+	eagle_tokenizer tok(*this, istrm);
 
 	out("NETLIST_START(dummy)\n");
 	add_term("GND", "GND");
